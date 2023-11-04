@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.support.ServletContextAttributeFactoryBean;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,6 +31,7 @@ public class StudentEndpoint {
     @Autowired
     private DateUtil dateUtil;
 
+    // @RequestMapping(method = RequestMethod.GET)
     @GetMapping()
     public ResponseEntity<List<Student>> listAll() {
         // System.out.println(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
@@ -52,6 +56,19 @@ public class StudentEndpoint {
     public ResponseEntity<?> save(@RequestBody Student student) {
         Student.studentList.add(student);
         // return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(student.getId()).toUri()).build();
+        return ResponseEntity.ok(student);
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<?> delete(@RequestBody Student student) {
+        Student.studentList.remove(student);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping()
+    public ResponseEntity<?> update(@RequestBody Student student) {
+        Student.studentList.remove(student);
+        Student.studentList.add(student);
         return ResponseEntity.ok(student);
     }
 }
